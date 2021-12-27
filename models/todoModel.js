@@ -11,23 +11,23 @@ exports.all = function (callback) {
 
 
 
-// auth
-exports.getAuth = function (login, password, callback) {
-    const sql = `SELECT user_id, user_name, user_email FROM todo_users WHERE user_name = '${login}' AND user_password = '${password}'`;
+// login
+exports.getLogin = function (email, password, callback) {
+    const sql = `SELECT * FROM todo_users WHERE user_email = '${email}' AND user_password = '${password}'`;
     db.con.query(sql, function (err, result) {
         callback(err, result);
     });
 };
 
-exports.findById = function (id, callback) {
-    const sql = `SELECT id_todo, label , done, important FROM  todo_list INNER JOIN todo_users USING(user_id) WHERE user_id = '${id}'`;
+exports.getUser = function (callback) {
+    const sql = `SELECT id_todo, label , done, important FROM  todo_list INNER JOIN todo_users USING(user_id) WHERE user_id = '${1}'`;
     db.con.query(sql, function (err, result) {
         callback(err, result);
     });
 };
 
-exports.setRegistration = function (login, password, email, callback) {
-    const sql = `INSERT INTO todo_users(user_name, user_password, user_email) VALUES ('${login}', '${password}', '${email}')`;
+exports.setRegistration = function (login, password, email, accessToken, callback) {
+    const sql = `INSERT INTO todo_users(user_name, user_password, user_email, user_token) VALUES ('${login}', '${password}', '${email}', '${accessToken}')`;
     db.con.query(sql, function (err, result) {
         callback(err, result);
     });
