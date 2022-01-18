@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 
-exports.accessTokenSecret = 'this_todo_access_token_secret';
+const accessTokenSecret = 'this_todo_access_token_secret';
+
+
 
 exports.authenticateJWT = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -21,3 +23,8 @@ exports.authenticateJWT = (req, res, next) => {
     res.sendStatus(401);
   }
 };
+
+exports.getAccessToken = (user) => jwt.sign({
+  id: user.id,
+  email: user.email
+}, accessTokenSecret);

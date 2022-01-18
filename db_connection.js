@@ -1,3 +1,4 @@
+/*
 const mysql = require('mysql');
 
 const con = mysql.createConnection({
@@ -12,4 +13,20 @@ con.connect(function(err) {
     console.log("Connected!");
 });
 
-exports.con = con;
+exports.con = con;*/
+
+
+const { Sequelize } = require('sequelize');
+const sequelize = new Sequelize("todo", "root", "", {
+    host: "localhost",
+    dialect: "mysql",
+});
+
+try {
+    sequelize.authenticate()
+    console.log('Соединение с БД было успешно установлено')
+} catch (e) {
+    console.log('Невозможно выполнить подключение к БД: ', e)
+}
+
+exports.sequelize = sequelize;

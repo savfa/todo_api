@@ -1,62 +1,48 @@
-const todo = require('../models/todoModel');
-const jwt = require("jsonwebtoken");
-const {JsonWebTokenError} = require("jsonwebtoken");
-const {accessTokenSecret} = require("../services/authenticateJWT");
-const _ = require('lodash');
+const todoModel = require('../models/todoModel');
 
+exports.getTodos = function (req, res) {
+  const { id } = req.user;
 
+  todoModel.getTodos(id).then((todos) => res.send({ data: todos }))
+    .catch((err) => {
+      res.status(400);
+      res.json({ error: err.message });
+    })
+};
 
-exports.all = function (req, res) {
-  todo.all(function (err, result) {
-    if (err) throw err;
-    res.send(result);
-  })
+exports.setTodo = function (req, res) {
+  const { id } = req.user;
+  const { label } = req.body;
+
+  todoModel.setTodo({user_id: id, label}).then((todo) => res.send({ data: todo }))
+    .catch((err) => {
+      res.status(400);
+      res.json({ error: err.message });
+    })
+};
+
+exports.updateTodo = function (req, res) {
+  const { todoId } = req.params;
+
+  todoModel.updateTodo(todoId, req.body).then((todo) => res.send({ data: todo }))
+    .catch((err) => {
+      res.status(400);
+      res.json({ error: err.message });
+    })
+};
+
+exports.deleteTodo = function (req, res) {
+  const { todoId } = req.params;
+
+  todoModel.deleteTodo(todoId).then((todo) => res.send({ data: todo }))
+    .catch((err) => {
+      res.status(400);
+      res.json({ error: err.message });
+    })
 };
 
 
-// login
-exports.login = function (req, res) {
-  const { email, password } = req.body;
-
-  todo.getLogin( email, password,  function (err, users) {
-    if (err || !users.length) {
-      //'login or password incorrect'
-      res.send('Username or password incorrect')
-    }
-    if (users.length) {
-      const accessToken = jwt.sign({
-        id: users[0]?.user_id,
-        username: users[0]?.user_name
-      }, accessTokenSecret);
-      res.send({
-        user:  _.omit(users[0], [`user_password`]),
-        token: { access: accessToken },
-      });
-    }
-  })
-};
-
-// register
-exports.register = function (req, res) {
-  const login = req.body.login;
-  const password = req.body.password;
-  const email = req.body.email;
-  const user = {login, password, email};
-  const accessToken = jwt.sign(user, accessTokenSecret);
-  todo.setRegistration( login, password, email, accessToken,  function (err, result) {
-    if (err) throw err;
-    res.send(result);
-  })
-};
-exports.getUser = function (req, res) {
-  debugger
-  todo.getUser(function (err, result) {
-    if (err) throw err;
-    res.send(result);
-  })
-};
-
-
+/*
 // add item
 exports.create = function (req, res) {
   todo.create(req.body.user_id, req.body.newItem, function (err, result) {
@@ -79,4 +65,4 @@ exports.delete = function (req, res) {
     if (err) throw err;
     res.send(result);
   })
-};
+};*/
