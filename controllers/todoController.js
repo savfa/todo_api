@@ -3,7 +3,9 @@ const todoModel = require('../models/todoModel');
 exports.getTodos = function (req, res) {
   const { id } = req.user;
 
-  todoModel.getTodos(id).then((todos) => res.send({ data: todos }))
+  todoModel.getTodos(id).then((todos) => res.send({ data: todos.sort(
+    (a, b) => +a.sort - +b.sort
+    )}))
     .catch((err) => {
       res.status(400);
       res.json({ error: err.message });
@@ -25,6 +27,17 @@ exports.updateTodo = function (req, res) {
   const { todoId } = req.params;
 
   todoModel.updateTodo(todoId, req.body).then((todo) => res.send({ data: todo }))
+    .catch((err) => {
+      res.status(400);
+      res.json({ error: err.message });
+    })
+};
+
+exports.sortTodos = function (req, res) {
+  const { id: userId } = req.user;
+  const { sortTodos } = req.body;
+
+  todoModel.sortTodos(sortTodos, userId).then((todo) => res.send({ data: `success` }))
     .catch((err) => {
       res.status(400);
       res.json({ error: err.message });

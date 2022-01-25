@@ -26,6 +26,11 @@ const TodoList = sequelize.define('TodoList', {
     allowNull: false,
     defaultValue: false,
   },
+  sort: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    defaultValue: null,
+  },
   createdAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
@@ -60,6 +65,22 @@ exports.updateTodo = function (id, updateObj) {
     .then(([affectedCount, affectedRows]) => {
       return TodoList.findOne({ where: { id }, raw: true });
     })
+};
+
+exports.sortTodos = async function (sortTodos, userId) {
+  const bulkUpdate = async (updateItems) => {
+    const itemShift = updateItems.shift();
+
+    await TodoList.update({sort: itemShift.sort },{ where: { user_id: userId, id: itemShift.id } })
+
+    if (updateItems.length > 0) {
+      await bulkUpdate(updateItems);
+    }
+  };
+
+  await bulkUpdate(sortTodos)
+
+  return `success`
 };
 
 exports.deleteTodo = function (id) {

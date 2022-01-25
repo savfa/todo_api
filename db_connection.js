@@ -20,6 +20,7 @@ const { Sequelize } = require('sequelize');
 const sequelize = new Sequelize("todo", "root", "", {
     host: "localhost",
     dialect: "mysql",
+    timezone:"Europe/Moscow",
 });
 
 try {
