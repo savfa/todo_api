@@ -48,7 +48,9 @@ exports.TodoList = TodoList;
 exports.getTodos = function (userId) {
   return TodoList.findAll({ where: { user_id: userId }, raw: true })
     .then((todos) => {
-      return todos;
+      return todos.sort(
+        (a, b) => +a.sort - +b.sort
+      );
     })
 };
 
