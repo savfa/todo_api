@@ -3,9 +3,7 @@ const todoModel = require('../models/todoModel');
 exports.getTodos = function (req, res) {
   const { id } = req.user;
 
-  todoModel.getTodos(id).then((todos) => res.send({ data: todos.sort(
-    (a, b) => +a.sort - +b.sort
-    )}))
+  todoModel.getTodos(id).then((todos) => res.send({ data: todos }))
     .catch((err) => {
       res.status(400);
       res.json({ error: err.message });

@@ -68,17 +68,19 @@ exports.updateTodo = function (id, updateObj) {
 };
 
 exports.sortTodos = async function (sortTodos, userId) {
-  const bulkUpdate = async (updateItems) => {
+  /*const bulkUpdate = async (updateItems) => {
     const itemShift = updateItems.shift();
-
     await TodoList.update({sort: itemShift.sort },{ where: { user_id: userId, id: itemShift.id } })
-
     if (updateItems.length > 0) {
       await bulkUpdate(updateItems);
     }
   };
+  await bulkUpdate(sortTodos)*/
 
-  await bulkUpdate(sortTodos)
+  await TodoList.bulkCreate(sortTodos, {
+    where: { user_id: userId},
+    updateOnDuplicate: [`sort`],
+  })
 
   return `success`
 };
