@@ -34,13 +34,13 @@ const User = sequelize.define('User', {
     defaultValue: DataTypes.NOW
   },
 }, {
-  tableName: 'Users'
+  tableName: 'users'
 });
 
 User.hasMany(TodoList, {
   foreignKey: 'user_id',
-  onDelete: 'CASCADE',
-  onUpdate: 'CASCADE',
+/*  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',*/
 });
 TodoList.belongsTo(User,
 {
