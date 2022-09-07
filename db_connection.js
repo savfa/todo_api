@@ -17,7 +17,7 @@ exports.con = con;*/
 
 
 const { Sequelize } = require('sequelize');
-const sequelize = new Sequelize("bh63835_todo", "root", "", {
+const sequelize = new Sequelize("todo", "root", "", {
     host: "localhost",
     dialect: "mysql",
     timezone:"Europe/Moscow",
