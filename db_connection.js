@@ -15,9 +15,9 @@ con.connect(function(err) {
 
 exports.con = con;*/
 
-
+// todo: name/login/password указать из настроек хостинга
 const { Sequelize } = require('sequelize');
-const sequelize = new Sequelize("bh63835_todo", "root", "", {
+const sequelize = new Sequelize("todo", "root", "", {
     host: "localhost",
     dialect: "mysql",
     timezone:"Europe/Moscow",
