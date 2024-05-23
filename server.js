@@ -18,6 +18,7 @@ app.use(camelcaseMiddleware({ deep: true })); // возвращаем в camelca
 app.use('/', require('./routes/index'));
 app.use('/', require('./routes/userRouter'));
 app.use('/', require('./routes/todoRouter'));
+app.use('/', require('./routes/mailerRouter'));
 
 // синхронизация с бд, после успшной синхронизации запускаем сервер
 sequelize.sync({ alter: true }).then(()=>{
